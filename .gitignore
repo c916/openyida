@@ -22,4 +22,4 @@ pages/src/*
 !pages/dist/.gitkeep
 !pages/src/.gitkeep
 .claude/*
-!.claude/.gitkeep
+!.claude/CLAUDE.md

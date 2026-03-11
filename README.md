@@ -7,7 +7,7 @@
 ```bash
 # 1.克隆仓库
 
-  git clone <repo-url> openyida
+  git clone https://github.com/openyida/openyida.git
 
 # 2. 使用代码编辑器打开项目，打开 AI Coding 工具，输入：执行安装脚本，等待 Skills 安装完成
 # 3. 一句话生成应用：帮我搭建一个生日祝福小游戏应用
@@ -50,6 +50,15 @@ AI 生成灯谜图片，用户猜答案，猜错了有 AI 幽默提示。
 
 ---
 
+## 常用问法
+1. 帮我搭建一个 xxx 应用
+2. 根据需求文档生成应用
+3. 帮我创建一个 xxx 表单页面
+4. 帮我给 xxx 页面添加一个 xxx 字段，字段名称：字段类型 xxx
+5. 帮我给 xxx 页面 xxx 字段改为必填
+6. 帮我发布 xxx 页面
+7. 重新登录
+8. 退出登录
 
 ## License
 
