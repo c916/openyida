@@ -8,6 +8,19 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+## [2026.03.24] - 2026-03-24
+
+### Added
+- 新增登录和 Cookie 存储 Mock 测试 (`tests/login.test.js`)
+  - 25 个测试用例覆盖 Cookie 解析、加载、保存逻辑
+  - 测试多 AI 工具环境检测（Qoder/Claude Code/悟空/OpenCode）
+  - 测试项目根目录解析逻辑
+  - 验证 Cookie 存储路径兼容性
+
+### Changed
+- 更新 Jest 到 `^29.7.0`
+- 完善 `.gitignore`，忽略根目录 `.cache/` 缓存文件
+
 ## [2026.03.19] - 2026-03-19
 
 ### Added
