@@ -350,13 +350,7 @@ empty: {
 ### 前置条件
 
 - Node.js 16+（用于 Babel 编译和发布）
-- Python 3.12+ + `playwright`（用于登录态管理）
-- 首次使用需安装依赖：
-
-```bash
-# openyida 已包含所有依赖，无需单独安装
-pip install playwright && playwright install chromium
-```
+- openyida 已包含所有依赖（Playwright 等），无需单独安装
 
 ### 编译源码
 
@@ -367,7 +361,7 @@ node scripts/babel-transform/transform.js <源文件路径>
 **编译流程**：
 
 ```
-源文件(.js) → @ali/vu-babel-transform (Babel 转换) → UglifyJS (压缩) → <name>.compile.js
+源文件(.js) → babel-transform (Babel 转换) → UglifyJS (压缩) → <name>.compile.js
 ```
 
 ### 部署到宜搭
@@ -837,7 +831,7 @@ openyida publish <源文件路径> <appType> <formUuid>
 ```
 
 **处理流程**：
-1. 通过 `@ali/vu-babel-transform` 将 JSX 转换为 ES5 + UglifyJS 压缩
+1. 通过内置 `babel-transform` 将 JSX 转换为 ES5 + UglifyJS 压缩
 2. 通过代码动态构建完整的 Schema JSON，将 `source` 和 `compiled` 填入 `actions.module`
 3. 调用 `yida-login` 获取登录态（Cookie 持久化，首次需扫码登录）
 4. 通过 HTTP POST 调用 `saveFormSchema` 接口保存 Schema

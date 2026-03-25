@@ -35,7 +35,7 @@ metadata:
 **场景**：将 JSX 源码编译并发布到宜搭
 **命令**：
 ```bash
-node <skill_root>/yida-publish-page/scripts/publish.js APP_XXX FORM-XXX pages/src/my-page.js
+openyida publish pages/src/my-page.js APP_XXX FORM-XXX
 ```
 **输出**：
 ```json
@@ -68,7 +68,7 @@ node publish.js APP_XXX FORM-XXXXXX pages/src/xxx.js
 
 ## 工作流程
 
-1. **编译源码**：通过 `@ali/vu-babel-transform` 将 JSX 转换为 ES5，再通过 UglifyJS 压缩
+1. **编译源码**：通过内置 `babel-transform` 将 JSX 转换为 ES5，再通过 UglifyJS 压缩
 2. **构建 Schema**：通过代码动态构建完整的 Schema JSON，将编译后的 `source` 和 `compiled` 填入 `actions.module`
 3. **读取登录态**：读取项目根目录的 `.cache/cookies.json`；若不存在则自动调用 `login.py` 触发扫码登录
 4. **发布 Schema**：通过 HTTP POST 调用 `saveFormSchema` 接口保存 Schema；根据响应体 `errorCode` 自动处理异常（详见 `yida-login` 技能文档「错误处理机制」章节）
@@ -109,12 +109,7 @@ body { background-color: #f2f3f5; }
 ## 前置依赖
 
 - Node.js 16+
-- Python 3.12+（用于调用 yida-login）
-- playwright（Python 版，yida-login 依赖）
-
-```bash
-cd <skill_root>/yida-publish-page/scripts && npm install
-```
+- openyida 已包含所有依赖（Playwright 等），无需单独安装
 
 ## 文件结构
 
