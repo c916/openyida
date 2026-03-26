@@ -87,6 +87,10 @@ openyida connector create "钉钉API" "api.dingtalk.com" --auth "钉钉开放平
 
 详见 [连接器执行动作配置文件格式](references/connector-action-format.md)。
 
+## 模板
+
+- [接口文档模板](templates/api-document-template.md)：帮助用户填写接口信息以创建连接器，可通过 `openyida connector gen-template` 命令生成
+
 ## 参考文档
 
 - [宜搭 HTTP 连接器官方文档](https://docs.aliwork.com/docs/yida_support/_10/zbq17y)
