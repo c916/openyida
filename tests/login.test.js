@@ -236,6 +236,15 @@ describe("findProjectRoot 环境检测", () => {
   beforeEach(() => {
     originalEnv = { ...process.env };
     originalCwd = process.cwd();
+    // 清除所有 AI 工具环境变量，确保测试不受当前运行环境影响
+    delete process.env.CLAUDE_CODE;
+    delete process.env.OPENCODE;
+    delete process.env.QODER_IDE;
+    delete process.env.QODER_AGENT;
+    delete process.env.CURSOR_TRACE_ID;
+    delete process.env.AGENT_WORK_ROOT;
+    delete process.env.TERM_PROGRAM;
+    delete process.env.VSCODE_GIT_ASKPASS_NODE;
   });
 
   afterEach(() => {
@@ -313,6 +322,15 @@ describe("detectActiveTool", () => {
 
   beforeEach(() => {
     originalEnv = { ...process.env };
+    // 清除所有 AI 工具环境变量，确保测试不受当前运行环境影响
+    delete process.env.CLAUDE_CODE;
+    delete process.env.OPENCODE;
+    delete process.env.QODER_IDE;
+    delete process.env.QODER_AGENT;
+    delete process.env.CURSOR_TRACE_ID;
+    delete process.env.AGENT_WORK_ROOT;
+    delete process.env.TERM_PROGRAM;
+    delete process.env.VSCODE_GIT_ASKPASS_NODE;
   });
 
   afterEach(() => {
