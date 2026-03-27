@@ -64,6 +64,63 @@
 | 部门 | `1123456` 或 `["1123456"]` | `["1123456"]` |
 | 城市 | `[省ID,市ID,区ID]` | `[省ID,市ID,区ID]` |
 | 子表单 | `"模糊搜索文本"` | `[{"textField_xxx":"值"}]` |
+| 关联表单 | 不支持直接查询 | `[{"appType":"xxx","formUuid":"xxx","instanceId":"xxx"}]` |
+
+## 关联表单字段（AssociationFormField）
+
+关联表单字段用于引用其他表单的数据记录，数据格式较为特殊。
+
+### 保存格式
+
+必须传入**数组对象**，每个对象包含三个必填字段：
+
+```json
+[
+  {
+    "appType": "APP_xxx",
+    "formUuid": "FORM-xxx",
+    "instanceId": "FINST-xxx"
+  }
+]
+```
+
+| 字段 | 说明 |
+| --- | --- |
+| `appType` | 被关联表单所属应用的 appType |
+| `formUuid` | 被关联表单的 formUuid |
+| `instanceId` | 被关联数据的 formInstId（注意：字段名是 instanceId，不是 formInstId） |
+
+### 示例
+
+```bash
+# 1. 先查询被关联表单获取 formInstId
+openyida data query form APP_xxx FORM-客户表 --size 1
+# 返回: formInstId: "FINST-ABC123"
+
+# 2. 创建带关联的数据
+openyida data create form APP_xxx FORM-商机表 --data-json '{
+  "textField_xxx": "商机名称",
+  "associationFormField_xxx": [{"appType":"APP_xxx","formUuid":"FORM-客户表","instanceId":"FINST-ABC123"}]
+}'
+```
+
+### 查询返回格式
+
+查询时返回的 `formData` 中，关联表单字段以 `_id` 后缀显示：
+
+```json
+{
+  "associationFormField_xxx_id": "\"[{...}]\""
+}
+```
+
+### 注意事项
+
+- **instanceId 命名**：保存时字段名必须是 `instanceId`，不是 `formInstId`
+- **数组格式**：即使只关联一条数据，也必须使用数组格式 `[{...}]`
+- **三字段必填**：`appType`、`formUuid`、`instanceId` 缺一不可，否则返回参数校验失败
+- **跨应用关联**：如果关联的是其他应用的表单，需要使用对应应用的 appType
+- **API 限制**：部分宜搭环境可能限制通过 API 写入关联表单数据，建议在表单界面手动测试确认
 
 ## 实现建议
 

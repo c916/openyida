@@ -98,6 +98,21 @@ openyida data query tasks <appType> --type todo|done|submitted|cc [--page 1 --si
 | 成员 | `["userId"]` | `["userId"]` |
 | 部门 | `["deptId"]` | `["deptId"]` |
 | 子表 | `"模糊搜索"` | `[{"textField_xxx":"值"}]` |
+| 关联表单 | 不支持直接查询 | `[{"appType":"xxx","formUuid":"xxx","instanceId":"xxx"}]` |
+
+### 关联表单字段
+
+关联表单字段保存时必须使用数组对象格式，包含三个必填字段：
+
+```bash
+# 示例：创建带关联客户的商机
+openyida data create form APP_xxx FORM-商机表 --data-json '{
+  "textField_xxx": "商机名称",
+  "associationFormField_xxx": [{"appType":"APP_xxx","formUuid":"FORM-客户表","instanceId":"FINST-xxx"}]
+}'
+```
+
+> 注意：字段名是 `instanceId`（不是 formInstId），三个字段缺一不可
 
 ## 注意事项
 
