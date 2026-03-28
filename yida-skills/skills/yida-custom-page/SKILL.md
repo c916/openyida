@@ -76,7 +76,7 @@ openyida publish <源文件路径> <appType> <formUuid>
 | --- | --- |
 | **React 版本** | 必须兼容 **React 16**，禁止使用 Hooks（`useState`、`useEffect` 等） |
 | **单文件** | 所有代码写在一个文件中（如 `index.js`）|
-| **三方包引入** | 禁止使用 `import/require` 语法，如需使用第三方库，必须通过 `this.utils.loadScript` 加载 CDN 脚本，参考 [yida-api.md](../../reference/yida-api.md) 的「工具类 API」章节。|
+| **三方包引入** | 禁止使用 `import/require` 语法，如需使用第三方库，必须通过 `this.utils.loadScript` 加载 CDN 脚本，参考 [yida-api.md](../../references/yida-api.md) 的「工具类 API」章节。|
 | **函数导出格式** | 使用 `export function xxx() {}` 格式导出函数 |
 | **样式** | 所有 css 必须写在 renderJsx 的方法中，通过 style 的方式引入 |
 | **`this` 上下文** | 所有导出函数中的 `this` 指向宜搭页面的 React 类实例 |
@@ -444,7 +444,7 @@ this.utils.yida.searchFormDatas({
 
 ## API 速查
 
-### 表单数据（`this.utils.yida.<方法>(params)`）
+`### 表单数据（`this.utils.yida.<方法>(params)`）
 
 | 方法 | 说明 | 必填参数 |
 |------|------|----------|
@@ -474,9 +474,23 @@ this.utils.yida.searchFormDatas({
 | `isMobile` | 判断移动端 |
 | `openPage` | 打开新页面 |
 | `router.push` | 路由跳转 |
-| `loadScript` | 动态加载脚本 |
+| `loadScript` | 动态加载脚本 |`
 
-完整参数说明见 [yida-api.md](../../reference/yida-api.md)、[model-api.md](../../reference/model-api.md)。
+> **使用前必须阅读 [yida-api.md](../../references/yida-api.md) 查询详细的参数，禁止猜测参数**。
+
+### 大模型 AI 接口
+
+以下接口用于调用大模型 AI 文本生成能力：
+
+| 方法 | 说明 | 调用方式 |
+| --- | --- | --- |
+| `txtFromAI` | AI 文本生成 | `POST /query/intelligent/txtFromAI.json` |
+
+**主要参数**：`_csrf_token`（CSRF 令牌）、`prompt`（提示词）、`skill`（技能类型，如 `ToText`）、`maxTokens`（最大返回 token 数）
+
+> **使用前必须阅读 [model-api.md](../../references/model-api.md)查询详细的参数，禁止猜测参数**。
+
+---
 
 ## 参考文档
 

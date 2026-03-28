@@ -33,7 +33,7 @@ metadata:
 | **yida-report**（原生报表） | 创建宜搭平台内置报表，作为数据源 | 普通「报表」「统计」需求 |
 | **yida-chart**（本技能） | 基于原生报表数据，用 ECharts 实现自定义可视化页面 | 「更美观」「大屏」「ECharts」「定制化」需求 |
 
-> **使用本技能前**：若用户尚无原生报表，需先调用  技能创建原生报表作为数据源，再由本技能创建 ECharts 自定义页面。
+> **使用本技能前**：若用户尚无原生报表，需先调用 `yida-report` 技能创建原生报表作为数据源，再由本技能创建 ECharts 自定义页面。
 
 ## 概述
 
@@ -1282,7 +1282,7 @@ export function formatDate(timestamp) {
 
 如需创建或更新原生报表，请调用 `yida-report` 技能。相关参考：
 - **Schema 构建脚本**：[`build-yida-report-schema.js`](./build-yida-report-schema.js)
-- **组件详细文档**：[`reference/vc-yida-report-components-doc.md`](../../reference/vc-yida-report-components-doc.md)
+- **组件详细文档**：[`references/vc-yida-report-components-doc.md`](../../references/vc-yida-report-components-doc.md)
 
 ---
 
