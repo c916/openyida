@@ -25,7 +25,7 @@ jobs:
     - name: Check JavaScript syntax
       run: |
         node --check bin/yida.js
-        for f in lib/*.js; do node --check "$f"; done
+        find lib -name "*.js" -not -path "*/node_modules/*" -not -path "*/babel-transform/*" | while read f; do node --check "$f"; done
         echo "All JS files passed syntax check"
 
     - name: Run tests
