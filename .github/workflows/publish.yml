@@ -86,6 +86,24 @@ jobs:
         zip -r yida-skills.zip yida-skills/
         echo "Packaged yida-skills.zip ($(du -sh yida-skills.zip | cut -f1))"
 
+    - name: Write version back to main branch
+      run: |
+        TAG="${{ github.ref_name }}"
+        VERSION="${TAG#v}"
+        git config user.name "github-actions[bot]"
+        git config user.email "github-actions[bot]@users.noreply.github.com"
+        git fetch origin main
+        git checkout main
+        node -e "
+          const fs = require('fs');
+          const pkg = JSON.parse(fs.readFileSync('package.json', 'utf8'));
+          pkg.version = '$VERSION';
+          fs.writeFileSync('package.json', JSON.stringify(pkg, null, 2) + '\n');
+        "
+        git add package.json
+        git diff --cached --quiet || git commit -m "chore: bump version to $VERSION [skip ci]"
+        git push origin main
+
     - name: Create GitHub Release
       uses: softprops/action-gh-release@v2
       with:
