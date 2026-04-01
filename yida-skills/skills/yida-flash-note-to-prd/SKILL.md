@@ -5,25 +5,33 @@ description: >
   高质量的结构化 prompt，输出到 prd/ 目录，可直接驱动后续宜搭应用开发流程。
   支持文本、图片、闪记链接等多种输入方式。
   当用户发送闪记内容（文本或图片）、提到"闪记"、"会议纪要"、"会议记录"等关键词时，自动触发此技能。
-license: MIT
-compatibility:
-  - opencode
-  - claude-code
-  - qoder
-  - wukong
-metadata:
-  audience: developers
-  workflow: yida-development
-  version: 3.0.0
-  tags:
-    - yida
-    - flash-note
-    - prompt
-    - meeting-minutes
-    - ai
 ---
 
 # 钉钉闪记转高质量 Prompt 技能
+
+## 严格禁止 (NEVER DO)
+
+- 不要在没有闪记内容的情况下强行生成 PRD，必须等待用户提供闪记文本、图片或链接
+- 不要将生成的 prompt 写入项目根目录，必须写入 `prd/<项目名>.md`
+- 不要忽略闪记中的 A1 结构化摘要（会议摘要、待办事项、决策结论），这是最高优先级信息
+- 不要生成传统产品文档格式，输出必须是可直接驱动宜搭开发的结构化 prompt
+
+## 严格要求 (MUST DO)
+
+- 必须自动识别输入类型：文本闪记 / 图片闪记 / 闪记链接，分别处理
+- 必须提取会议元信息（标题、参会人、时间）并写入 prompt 上下文
+- 生成的 prompt 必须包含：功能模块、字段设计表、流程设计、报表需求、待确认事项
+- 生成完成后必须提示用户确认 PRD 内容，再进入开发流程
+
+## 适用场景
+
+| 用户意图 | 触发条件 |
+|---------|---------|
+| 闪记转需求文档 | 用户发送闪记文本/图片、提到"闪记"、"会议纪要"、"会议记录" |
+| 快速启动开发 | 从会议记录直接生成可执行的开发 prompt |
+
+---
+
 
 ## 概述
 
@@ -508,7 +516,7 @@ Prompt 生成后，可无缝衔接宜搭应用开发流程：
 | `yida-create-form-page` | 创建表单 | 字段设计（字段名、类型、必填、选项） |
 | `yida-create-process` | 配置审批流程 | 流程设计（节点、审批人、条件） |
 | `yida-custom-page` | 开发自定义页面 | 功能模块、页面布局需求 |
-| `yida-create-report` | 创建报表 | 数据报表需求 |
+| `yida-report` | 创建报表 | 数据报表需求 |
 
 ---
 
@@ -516,17 +524,6 @@ Prompt 生成后，可无缝衔接宜搭应用开发流程：
 
 - Node.js ≥ 16
 - 已登录宜搭（`.cache/cookies.json` 存在且有效），用于调用 AI 接口
-
----
-
-## 文件结构
-
-```
-yida-flash-note-to-prd/
-├── SKILL.md                      # 本文档（技能定义与使用说明）
-└── build-flash-note-prompt.js    # Prompt 构建模块（预处理、分段、Prompt 生成）
-```
-
 ---
 
 ## 注意事项

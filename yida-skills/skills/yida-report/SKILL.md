@@ -4,24 +4,33 @@ description: >
   宜搭原生报表技能，用于创建宜搭平台内置的原生报表页面（vc-yida-report 组件库），支持 16 种开箱即用的图表/表格/筛选器组件，通过 openyida create-report 命令生成报表 Schema 并发布。
   本技能定位：创建宜搭原生报表（作为数据源），普通的「报表」「统计」需求默认使用本技能。
   如需更美观的 ECharts 自定义可视化大屏，请使用 yida-chart 技能（依赖本技能创建的原生报表作为数据源）。
-license: MIT
-compatibility:
-  - opencode
-  - claude-code
-  - qoder
-  - wukong
-metadata:
-  audience: developers
-  workflow: yida-report
-  version: 1.0.0
-  tags:
-    - yida
-    - report
-    - chart
-    - visualization
 ---
 
 # 宜搭原生报表 + ECharts 自定义看板 技能文档
+
+## 严格禁止 (NEVER DO)
+
+- 不要在前端直接聚合表单数据，必须通过宜搭原生报表的 `getDataAsync.json` 或 `getCacheData.json` 接口获取聚合数据
+- 不要编造 `reportId`、`datasetId`、`fieldId`，必须从报表 Schema 或 URL 中提取
+- 不要将本技能与 `yida-chart` 混淆：本技能负责创建原生报表（数据源），`yida-chart` 负责 ECharts 可视化
+- 不要在没有原生报表的情况下直接使用 ECharts，ECharts 必须依赖原生报表作为数据源
+
+## 严格要求 (MUST DO)
+
+- 普通"报表"、"统计"需求默认使用本技能，不要直接跳到 `yida-chart`
+- 调用报表数据 API 前必须确认 `reportId` 和 `datasetId` 来自真实报表
+- 解析报表数据时必须处理 `data.rows` 为空的情况，避免页面崩溃
+
+## 适用场景
+
+| 用户意图 | 触发条件 |
+|---------|---------|
+| 普通报表/统计需求 | "报表"、"统计"、"数据分析"（默认使用本技能） |
+| 读取报表聚合数据 | 调用 `getDataAsync.json` / `getCacheData.json` |
+| 为 ECharts 提供数据源 | 先用本技能创建原生报表，再用 `yida-chart` 可视化 |
+
+---
+
 
 ## 概述
 
@@ -405,7 +414,7 @@ await httpPost(baseUrl, `/dingtalk/web/${APP_TYPE}/query/punchFormDataProvider/s
 4. 将参数复制到自定义页面代码中
 
 **Q：ECharts 图表不显示？**
-- 确认 ECharts CDN 加载成功：`https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js`
+- 确认 ECharts CDN 加载成功：`https://g.alicdn.com/code/lib/echarts/5.5.0/echarts.min.js`
 - 确认 DOM 元素已渲染后再调用 `echarts.init()`
 - 使用 `setTimeout` 延迟初始化图表
 
