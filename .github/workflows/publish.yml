@@ -100,6 +100,7 @@ jobs:
         echo "Packaged yida-skills.zip ($(du -sh yida-skills.zip | cut -f1))"
 
     - name: Write version back to main branch
+      if: ${{ !contains(github.ref_name, '-beta') && !contains(github.ref_name, '-alpha') && !contains(github.ref_name, '-rc') }}
       run: |
         TAG="${{ github.ref_name }}"
         VERSION="${TAG#v}"
