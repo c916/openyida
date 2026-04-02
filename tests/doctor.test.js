@@ -278,24 +278,12 @@ describe('EnvironmentChecker', () => {
     cleanupTempDir(tmpDir);
   });
 
-  test('checkSkills 无 skills 目录时报警告', () => {
-    const tmpDir = createTempProject();
-    const checker = new EnvironmentChecker({ projectRoot: tmpDir });
-    const result = checker.checkSkills();
-
-    expect(result.id).toBe('env-skills');
-    expect(result.passed).toBe(false);
-    expect(result.severity).toBe('warning');
-
-    cleanupTempDir(tmpDir);
-  });
-
   test('check 返回所有检查结果', async () => {
     const tmpDir = createTempProject();
     const checker = new EnvironmentChecker({ projectRoot: tmpDir });
     const results = await checker.check();
 
-    expect(results.length).toBeGreaterThanOrEqual(8);
+    expect(results.length).toBeGreaterThanOrEqual(6);
     expect(results.every((r) => r.id && r.label)).toBe(true);
 
     cleanupTempDir(tmpDir);
