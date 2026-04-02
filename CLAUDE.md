@@ -29,6 +29,7 @@ node --check lib/xxx.js  # 语法检查
 - Node.js 原生 API 优先，尽量不引入新依赖
 - 错误处理：`console.error()` + `process.exit(1)`
 - 新增命令需同步更新 `README.md` 的命令一览表
+- **推送 tag 前必须本地跑 `npm test` 确认全量单测通过**，避免 CI 因测试失败而中断发布
 
 ## 悟空（Wukong）特殊说明
 
