@@ -96,7 +96,7 @@ jobs:
 
     - name: Package yida-skills.zip
       run: |
-        zip -r yida-skills.zip yida-skills/
+        zip -r yida-skills.zip yida-skills/ -x "*.DS_Store"
         echo "Packaged yida-skills.zip ($(du -sh yida-skills.zip | cut -f1))"
 
     - name: Write version back to main branch
