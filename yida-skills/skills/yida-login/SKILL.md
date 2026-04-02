@@ -29,8 +29,6 @@ description: 宜搭登录态管理。扫码登录，Cookie 持久化到 .cache/c
 
 ## 命令
 
-### 标准环境
-
 ```bash
 openyida login
 ```
