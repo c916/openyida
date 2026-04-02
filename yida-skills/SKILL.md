@@ -30,22 +30,11 @@ metadata:
 ## ⚡ 首要步骤（每次必须先执行）
 
 ```bash
-# 1. 检测 openyida 是否已安装且版本匹配，否则安装/升级到最新版
-# 注意：将下方 <SKILL_VERSION> 替换为本文件 frontmatter 中 metadata.version 的值
-INSTALLED_VERSION=$(openyida -v 2>/dev/null)
-if [ -z "$INSTALLED_VERSION" ]; then
-  echo "openyida 未安装，正在安装..."
-  npm install -g openyida@latest
-elif [ "$INSTALLED_VERSION" != "<SKILL_VERSION>" ]; then
-  echo "版本不匹配（当前: $INSTALLED_VERSION，期望: <SKILL_VERSION>），正在升级..."
-  npm install -g openyida@latest
-fi
+# 1. 确保 openyida 已安装（未安装则自动安装）
+openyida -v 2>/dev/null || npm install -g openyida@latest
 
-# 2. 检测 AI 工具环境和登录态
-openyida env
-
-# 3. 确认 project/ 目录存在，不存在则初始化
-openyida copy
+# 2. 一键诊断并自动修复：版本升级 + 环境检测 + project 目录初始化
+openyida doctor --fix
 ```
 
 ---
