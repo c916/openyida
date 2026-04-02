@@ -31,6 +31,15 @@ npm install -g openyida
 
 **Zero config, works out of the box.** After installation, just chat in Claude Code / OpenCode / Aone Copilot:
 
+### Wukong Installation
+
+Wukong uses manual skill package installation instead of npm:
+
+1. Download the latest skill package (`.zip`) from [GitHub Releases](https://github.com/openyida/openyida/releases)
+2. Open Wukong → **Skill Center** → **Upload Skill**, then select the downloaded package
+
+
+
 ```
 Build me an IPD system on Yida to manage the full chip production workflow
 Help me set up a CRM

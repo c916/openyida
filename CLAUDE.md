@@ -29,6 +29,14 @@ node --check lib/xxx.js  # 语法检查
 - Node.js 原生 API 优先，尽量不引入新依赖
 - 错误处理：`console.error()` + `process.exit(1)`
 - 新增命令需同步更新 `README.md` 的命令一览表
+- **推送 tag 前必须本地跑 `npm test` 确认全量单测通过**，避免 CI 因测试失败而中断发布
+
+## 悟空（Wukong）特殊说明
+
+- 工作区路径含动态 uuid：`~/.real/users/{uuid}/workspace/`，通过 `AGENT_WORK_ROOT` 环境变量获取
+- `detectActiveTool()` 直接读取 `AGENT_WORK_ROOT` 作为 `workspaceRoot`，不能硬编码 `~/.real/workspace/`
+- `openyida copy` 在空目录时直接铺入 `project/` 内容（不创建 `project/` 子目录）
+- 悟空通过手动上传技能包，`postinstall` 不安装 `yida-skills/`
 
 ## 禁止事项
 
@@ -36,3 +44,4 @@ node --check lib/xxx.js  # 语法检查
 - 不要修改 `yida-skills/` 文档（除非明确要求更新技能）
 - 不要引入需要编译的依赖（项目是纯 JS，无构建步骤）
 - 不要直接推送 main 分支
+- 不要硬编码悟空工作区路径，必须通过 `AGENT_WORK_ROOT` 读取

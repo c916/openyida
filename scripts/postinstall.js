@@ -1,19 +1,20 @@
 #!/usr/bin/env node
 /**
- * postinstall hook: auto-configure IDE integration after `npm install -g openyida`
+ * postinstall hook: skills installation + welcome guide after `npm install -g openyida`
  *
- * Copies the yida-skills/ folder into each AI tool's config directory.
- * Each tool discovers the skill pack by scanning its own config directory.
+ * 职责：
+ *   1. 清理旧版本遗留的错误安装（~/.xxx/yida-skills/，缺少 skills/ 中间层级）
+ *   2. 将 yida-skills/ 安装到各 AI 工具的正确 skills 目录
+ *   3. 首次安装欢迎引导
  *
- * Supported tools: Claude Code / OpenCode / Aone Copilot / Cursor / Qoder / Wukong
+ * 正确的 skills 安装路径（所有工具统一使用 skills/ 子目录）：
+ *   ~/.claude/skills/yida-skills/          ← <package>/yida-skills (copy)
+ *   ~/.opencode/skills/yida-skills/        ← <package>/yida-skills (copy)
+ *   ~/.aone_copilot/skills/yida-skills/    ← <package>/yida-skills (copy)
+ *   ~/.cursor/skills/yida-skills/          ← <package>/yida-skills (copy)
+ *   ~/.qoder/skills/yida-skills/           ← <package>/yida-skills (copy)
  *
- * Symlink layout (no extra "skills/" subdirectory needed):
- *   ~/.claude/yida-skills          → <package>/yida-skills
- *   ~/.opencode/yida-skills        → <package>/yida-skills
- *   ~/.aone_copilot/yida-skills    → <package>/yida-skills
- *   ~/.cursor/yida-skills          → <package>/yida-skills
- *   ~/.qoder/yida-skills           → <package>/yida-skills
- *   ~/.real/yida-skills            → <package>/yida-skills  (Wukong)
+ * 悟空（Wukong）通过手动上传技能，不在此安装。
  */
 
 'use strict';
@@ -38,15 +39,6 @@ function safeExec(fn) {
 }
 
 /**
- * Ensure a directory exists (mkdir -p).
- */
-function ensureDir(dirPath) {
-  if (!fs.existsSync(dirPath)) {
-    fs.mkdirSync(dirPath, { recursive: true });
-  }
-}
-
-/**
  * Recursively copy a directory, overwriting existing files.
  */
 function copyDirRecursive(src, dest) {
@@ -65,82 +57,86 @@ function copyDirRecursive(src, dest) {
 }
 
 /**
- * Install yida-skills by copying files into `ideConfigDir`.
- *
- * Uses file copy instead of symlink to ensure AI tools can always
- * discover skills on the first run (fixes #186).
- *
- * - If an old symlink exists → remove it first, then copy.
- * - If a real directory exists → remove and do a clean copy.
+ * 清理旧版遗留的错误路径（软链接或目录）。
  */
-function installSkills(ideConfigDir) {
-  const destPath = path.join(ideConfigDir, 'yida-skills');
-
-  ensureDir(ideConfigDir);
-
-  let existingStat = null;
+function cleanupLegacy(dirPath) {
   try {
-    existingStat = fs.lstatSync(destPath);
-  } catch {
-    /* does not exist, will create */
-  }
-
-  if (existingStat) {
-    if (existingStat.isSymbolicLink()) {
-      // Remove old symlink left by previous versions
-      fs.unlinkSync(destPath);
-    } else {
-      fs.rmSync(destPath, { recursive: true, force: true });
+    const stat = fs.lstatSync(dirPath);
+    if (stat.isSymbolicLink()) {
+      fs.unlinkSync(dirPath);
+    } else if (stat.isDirectory()) {
+      fs.rmSync(dirPath, { recursive: true, force: true });
     }
+  } catch {
+    /* not exists, ok */
   }
+}
 
+/**
+ * 将 yida-skills 安装到 AI 工具的 skills 目录。
+ * 正确路径：~/<tool-config>/skills/yida-skills/
+ *
+ * 同时清理旧版遗留在根目录的错误安装：~/<tool-config>/yida-skills/
+ */
+function installSkillsToTool(toolConfigDir) {
+  // 清理旧版遗留在根目录的错误安装（缺少 skills/ 中间层级）
+  cleanupLegacy(path.join(toolConfigDir, 'yida-skills'));
+
+  // 安装到正确路径：~/<tool-config>/skills/yida-skills/
+  const skillsDir = path.join(toolConfigDir, 'skills');
+  const destPath = path.join(skillsDir, 'yida-skills');
+
+  fs.mkdirSync(skillsDir, { recursive: true });
+
+  // 如果已存在，先清理（旧软链接或旧目录）
+  cleanupLegacy(destPath);
+
+  // 复制文件（不用软链接，确保 AI 工具首次扫描就能发现）
   copyDirRecursive(SKILLS_DIR, destPath);
 }
 
-// ── 1. Skills installation (copy to each tool's config root) ─────────
+// ── 1. Skills 安装 ───────────────────────────────────────────────────
+// 安装到各 AI 工具的正确 skills 目录（悟空跳过，悟空通过手动上传技能）
 
-// Claude Code
+// Claude Code — 始终安装（Claude Code 是主要目标用户）
 safeExec(() => {
-  installSkills(path.join(HOME_DIR, '.claude'));
+  installSkillsToTool(path.join(HOME_DIR, '.claude'));
 });
 
-// OpenCode
+// OpenCode — 仅在已安装时安装
 safeExec(() => {
   if (fs.existsSync(path.join(HOME_DIR, '.opencode'))) {
-    installSkills(path.join(HOME_DIR, '.opencode'));
+    installSkillsToTool(path.join(HOME_DIR, '.opencode'));
   }
 });
 
-// Aone Copilot
+// Aone Copilot — 仅在已安装时安装
 safeExec(() => {
   if (fs.existsSync(path.join(HOME_DIR, '.aone_copilot'))) {
-    installSkills(path.join(HOME_DIR, '.aone_copilot'));
+    installSkillsToTool(path.join(HOME_DIR, '.aone_copilot'));
   }
 });
 
-// Cursor
+// Cursor — 仅在已安装时安装
 safeExec(() => {
   if (fs.existsSync(path.join(HOME_DIR, '.cursor'))) {
-    installSkills(path.join(HOME_DIR, '.cursor'));
+    installSkillsToTool(path.join(HOME_DIR, '.cursor'));
   }
 });
 
-// Qoder
+// Qoder — 仅在已安装时安装
 safeExec(() => {
   if (fs.existsSync(path.join(HOME_DIR, '.qoder'))) {
-    installSkills(path.join(HOME_DIR, '.qoder'));
+    installSkillsToTool(path.join(HOME_DIR, '.qoder'));
   }
 });
 
-// ── 2. Wukong integration ─────────────────────────────────────────────
-
+// 悟空（Wukong）— 跳过安装，只清理旧版遗留
 safeExec(() => {
-  if (fs.existsSync(path.join(HOME_DIR, '.real'))) {
-    installSkills(path.join(HOME_DIR, '.real'));
-  }
+  cleanupLegacy(path.join(HOME_DIR, '.real', 'yida-skills'));
 });
 
-// ── 3. 首次安装欢迎引导 ──────────────────────────────────────────────
+// ── 2. 首次安装欢迎引导 ──────────────────────────────────────────────
 
 safeExec(() => {
   const FIRST_INSTALL_FLAG = path.join(HOME_DIR, '.openyida', 'installed');

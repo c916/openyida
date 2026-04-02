@@ -301,6 +301,43 @@ this.forceUpdate();
 
    > **生成代码时的自检清单**：检查 `renderJsx` 中所有 `onClick`、`onChange`、`onSubmit` 等事件属性，确保每一个都是 `(e) => { this.xxx(e) }` 形式，不存在任何 `onClick={this.xxx}` 的写法。
 
+   // ❌ 错误③：在 .map(function(){}) 普通函数回调中使用箭头函数事件处理器，this 已在 function 回调里丢失，箭头函数捕获的 this 是 undefined！
+   export function renderJsx() {
+     return (
+       <div>
+         {quickBtns.map(function(btn, idx) {
+           return (
+             <button
+               key={idx}
+               onClick={(e) => { this.goToForm(btn.form); }}  // ❌ this 是 undefined，运行时报错
+             >
+               {btn.label}
+             </button>
+           );
+         })}
+       </div>
+     );
+   }
+
+   // ✅ 正确：.map() 回调必须使用箭头函数，确保 this 正确捕获
+   export function renderJsx() {
+     return (
+       <div>
+         {quickBtns.map((btn, idx) => (
+           <button
+             key={idx}
+             onClick={(e) => { this.goToForm(btn.form); }}  // ✅ 箭头函数回调 + 箭头函数事件处理器，this 正确
+           >
+             {btn.label}
+           </button>
+         ))}
+       </div>
+     );
+   }
+   ```
+
+   > **补充自检项**：检查 `renderJsx` 中所有 `.map()`、`.filter()`、`.forEach()` 等数组方法的回调，确保全部使用**箭头函数**形式 `(item) => ...`，不存在任何 `.map(function(item) {...})` 的写法，否则回调内部的 `this` 会丢失。
+
 3. **输入法组合输入处理**：使用 `_isComposing` 标记配合 `compositionstart` / `compositionend` 事件，正确处理中文输入法的组合输入状态，避免输入过程中触发提交
 4. **定时器清理**：在 `didUnmount` 中必须清理所有通过 `setInterval` / `setTimeout` 创建的定时器，防止内存泄漏
 5. **错误处理**：所有 API 调用（`this.utils.yida.*`、`fetch`）必须使用 `.catch()` 处理异常，并通过 `this.utils.toast({ title: message, type: 'error' })` 向用户展示错误提示

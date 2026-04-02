@@ -1,11 +1,8 @@
 ---
 name: yida-skills
-description: >
-  宜搭低代码平台 AI 开发入口。一句话生成完整应用：创建应用、表单设计、自定义页面、流程配置、数据管理。
-  当用户提到"宜搭"、"yida"、"低代码"、"创建应用"、"创建表单"、"发布页面"、"搭建"、"系统"、"应用"时触发。
+description: "宜搭低代码平台 AI 开发入口。一句话生成完整应用：创建应用、表单设计、自定义页面、流程配置、数据管理。当用户提到「宜搭」「yida」「低代码」「创建应用」「创建表单」「发布页面」「搭建」「系统」「应用」时触发。"
 metadata:
-  version: 2026-03-30
----
+  version: 2026.04.02-beta.16---
 
 # 宜搭 AI 应用开发指南
 
@@ -30,11 +27,11 @@ metadata:
 ## ⚡ 首要步骤（每次必须先执行）
 
 ```bash
-# 1. 检测 AI 工具环境和登录态
-openyida env
+# 1. 确保 openyida 已安装（未安装则自动安装，已安装则跳过）
+openyida -v 2>/dev/null || npm install -g openyida@latest
 
-# 2. 确认 project/ 目录存在，不存在则初始化
-openyida copy
+# 2. 一键诊断并自动修复：环境检测 + project 目录初始化
+openyida doctor --fix
 ```
 
 ---

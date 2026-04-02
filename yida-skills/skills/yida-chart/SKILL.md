@@ -1,7 +1,6 @@
 ---
 name: yida-chart
-description: >-
-  宜搭 ECharts 高级报表技能。通过 ECharts + 自定义页面 JSX 实现高度定制化、更美观的数据可视化报表。本技能不负责创建宜搭原生报表（标准报表由 yida-report 技能负责），但 ECharts 报表必须依赖宜搭原生报表的 getDataAsync.json 或 getCacheData.json 接口获取聚合数据，禁止前端聚合（当前仅支持单表数据源，暂不支持多表关联）。数据源获取方式：若用户已有原生报表，直接读取其信息作为数据源；若用户没有原生报表，则先调用 yida-report 技能创建原生报表作为数据源。当用户提供了已有报表 URL（如 https://www.aliwork.com/APP_XXX/admin/REPORT-XXX）时，解析现有报表 Schema 提取数据源参数，基于该数据源创建 ECharts 自定义页面（输出始终是 ECharts 自定义页面，而非优化后的原生报表）。当用户提到"更美观"、"高级"、"定制化"、"ECharts"、"echarts"、"Dashboard 大屏"、"数据大屏"等关键词，或用户提供了报表 URL 要求优化时，使用此技能。普通的"报表"、"统计"等需求默认由 yida-report 技能处理。
+description: "宜搭 ECharts 高级报表技能。通过 ECharts + 自定义页面 JSX 实现高度定制化、更美观的数据可视化报表。本技能不负责创建宜搭原生报表（标准报表由 yida-report 技能负责），但 ECharts 报表必须依赖宜搭原生报表的 getDataAsync.json 或 getCacheData.json 接口获取聚合数据，禁止前端聚合。当用户提到「更美观」「高级」「定制化」「ECharts」「echarts」「Dashboard 大屏」「数据大屏」等关键词，或用户提供了报表 URL 要求优化时，使用此技能。普通的「报表」「统计」等需求默认由 yida-report 技能处理。"
 ---
 
 # 宜搭 ECharts 高级报表技能

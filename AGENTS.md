@@ -123,6 +123,12 @@ openyida/
 - 支持环境：Claude Code、Aone Copilot、Cursor、OpenCode、Qoder、悟空
 - 不同环境的 Cookie 提取方式不同（CDP 协议 / 文件读取 / 扫码）
 
+### 悟空（Wukong）特殊说明
+- 悟空工作区路径含动态 uuid：`~/.real/users/{uuid}/workspace/`，通过 `AGENT_WORK_ROOT` 环境变量获取
+- `lib/core/utils.js` 的 `detectActiveTool()` 直接读取 `AGENT_WORK_ROOT` 作为工作区根目录
+- `openyida copy` 在**空目录**时会直接把 `project/` 内容铺入工作区（不创建 `project/` 子目录层级）
+- 悟空通过手动上传技能包，`postinstall` 不会自动安装 `yida-skills/`
+
 ### 自定义页面
 - 源码位于 `project/pages/src/`，使用 React + 宜搭 SDK
 - 发布前通过 `lib/babel-transform/` 进行 Babel 编译
@@ -160,4 +166,3 @@ openyida/
 ### 调试登录问题
 - 检查 `lib/login.js` 中的 Cookie 缓存逻辑
 - 使用 `openyida env` 确认当前环境检测是否正确
-- 悟空环境使用 CDP 协议，其他环境使用扫码登录

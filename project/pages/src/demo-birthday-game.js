@@ -233,7 +233,6 @@ export function requestMicrophone() {
     // 开始检测吹气
     self.startBlowDetection();
   }).catch(function(err) {
-    console.log('麦克风权限被拒绝:', err);
     _customState.micPermission = 'denied';
     // 即使麦克风失败，用户仍可以点击蜡烛
   });

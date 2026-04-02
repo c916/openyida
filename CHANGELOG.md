@@ -8,6 +8,16 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+## [2026.04.02-beta.12] - 2026-04-02
+
+### Fixed
+- **悟空工作区路径**：`utils.js` / `env.js` / `copy.js` 中悟空的 `workspaceRoot` 改为直接读取 `AGENT_WORK_ROOT` 环境变量，支持动态 uuid 路径（`~/.real/users/{uuid}/workspace/`），不再硬编码 `~/.real/workspace/`
+- **postinstall 污染**：删除 `postinstall.js` 中向 `~/.real/` 复制 `yida-skills/` 的逻辑，悟空通过手动上传技能，无需自动安装
+
+### Added
+- **`openyida copy` 空目录铺平**：检测目标目录是否为空，空目录时直接把 `project/` 内容铺入（不创建 `project/` 子目录），适配悟空新工作区场景
+- **i18n**：新增 `copy.dest_empty_flatten` 翻译 key，覆盖全部 12 种语言
+
 ## [2026.04.01] - 2026-04-01
 
 ### Improved
