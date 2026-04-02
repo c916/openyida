@@ -140,39 +140,7 @@ safeExec(() => {
   }
 });
 
-// ── 3. Chromium 按需安装 ─────────────────────────────────────────────
-
-safeExec(() => {
-  const { execSync } = require('child_process');
-
-  let chromiumPath = null;
-  try {
-    // 通过 playwright 内置 API 获取 Chromium 可执行文件路径
-    const { chromium } = require('playwright');
-    chromiumPath = chromium.executablePath();
-  } catch {
-    // playwright 未安装或 API 不可用，跳过
-    return;
-  }
-
-  if (chromiumPath && fs.existsSync(chromiumPath)) {
-    // Chromium 已存在，无需重复安装
-    return;
-  }
-
-  console.log('\n  🌐 正在安装 Chromium 浏览器（首次安装需要下载，请稍候）...');
-  try {
-    execSync('npx playwright install chromium', {
-      stdio: 'inherit',
-      timeout: 300_000, // 5 分钟超时
-    });
-    console.log('  ✅ Chromium 安装完成！\n');
-  } catch {
-    console.warn('  ⚠️  Chromium 安装失败，可手动执行：npx playwright install chromium\n');
-  }
-});
-
-// ── 4. 首次安装欢迎引导 ──────────────────────────────────────────────
+// ── 3. 首次安装欢迎引导 ──────────────────────────────────────────────
 
 safeExec(() => {
   const FIRST_INSTALL_FLAG = path.join(HOME_DIR, '.openyida', 'installed');
